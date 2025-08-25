@@ -71,7 +71,10 @@ Click to reveal puzzle solutions and the final key.
 Enter the full key into the terminal to win:
 `ZX12-QW34-MN78-AB56`
 
+-----
 
+#### **A small demo video**
+https://www.youtube.com/watch?v=9F-Dgac2SQU
 
 -----
 
@@ -80,3 +83,50 @@ Enter the full key into the terminal to win:
   * HTML5
   * CSS3
   * Vanilla JavaScript
+-----
+
+## Future Expansion Plans
+
+
+### Phase 1: Gameplay & Puzzle Expansion
+
+This phase focuses on adding more content and variety for the player to experience.
+
+1.  **Introduce New Puzzle Types:**
+    * **An Audio Puzzle:** The terminal links to a "corrupted" audio file (e.g., `evidence.wav`). Players must download it and listen closely to find a hidden code spoken underneath layers of static, or a sequence of tones that translates to a number.
+    * **A JavaScript Console Puzzle:** The "Voice" instructs the player to "look deeper into the code." The player would need to open the browser's own developer console (`F12`) to find a message or a function (`run_diagnostic()`) that reveals the next fragment. This is very meta and fits the theme perfectly.
+    * **An Image Steganography Puzzle:** A linked image file (`data_fragment.png`) seems like a dead end, but a clue in its filename or the surrounding text hints that the key is hidden *inside* the image data itself, requiring the player to use an online steganography tool to extract it.
+
+2.  **Add Dynamic Elements:**
+    * **Randomized Clues:** To increase replayability, have the key fragments appear in slightly different locations. For example, the fragment in the `.css` file could be attached to a different, randomly chosen class name each time the game loads.
+    * **Timed Events:** Introduce a sense of urgency. After solving a puzzle, the terminal could flash: `[WARNING: System Integrity Scan in 5:00 minutes]`. This puts the player on a clock to find the next fragment before the system "resets" their progress on that stage.
+
+
+
+### Phase 2: Narrative & World-Building
+
+This phase aims to deepen the story and the player's immersion in the world.
+
+1.  **Expand the Lore with Log Files:**
+    * Implement a `logs` or `archive` command in the terminal. This could allow the player to read the corrupted journal entries of previous "Detectives" who tried and failed, providing cryptic clues and building a richer backstory about the nature of the Matrix and the anomaly.
+
+2.  **Introduce a Sequel Hook or "Chapter 2":**
+    * **The Architect's Gambit:** Upon successfully fixing the anomaly, the player is contacted by a *different* entity—perhaps the cold, logical Architect of the Matrix itself. Their new mission isn't to *fix* the system, but to help the Architect enforce *control*, presenting a new, morally ambiguous set of puzzles.
+    * **Joining the Resistance:** The "Voice" reveals that fixing the anomaly was just a test. The player has now proven their ability, and the next phase is to join the human resistance to help truly *break* the Matrix and free others.
+
+3.  **Implement a "Third Ending":**
+    * What happens if the player enters the four fragments in the wrong order? Instead of a simple "failure," this could trigger a hidden, third ending where the player doesn't fix or escape the system, but instead absorbs the anomaly's power, becoming a rogue agent like Agent Smith.
+
+
+### Phase 3: Technical & Feature Enhancements
+
+This phase focuses on improving the technical foundation and user experience.
+
+1.  **Save Player Progress:**
+    * Use the browser's `localStorage` to save which key fragments the player has collected. If they close the tab and come back, they can resume their investigation without starting from scratch.
+
+2.  **Create a More Interactive Terminal:**
+    * Implement a basic file system with commands like `ls` (list files), `cd` (change directory), and `cat` (view file content). Players could navigate directories like `/system/logs` or `/user/detective/clues` to find information. Also, adding command history (using the up/down arrow keys) would be a huge quality-of-life improvement.
+
+3.  **Implement a Speedrun Mode:**
+    * Add a timer that starts the moment the "Red Pill" is chosen and stops when the final key is entered correctly. This could be displayed on the success screen and would encourage players to master the puzzles and compete for the fastest time.
