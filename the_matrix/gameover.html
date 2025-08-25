@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Anomaly [CONNECTION SEVERED]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        body {
+            /* Insert your image URL below */
+            background-image: url('fail.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .end-container {
+            background-color: rgba(100, 0, 0, 0.5);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            text-shadow: 0 0 15px #ff0000;
+            animation: flickerTrap 2s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <audio id="gameover-audio" src="collapsing.mp3" preload="auto"></audio>
+    <div class="view flex-col justify-center items-center h-screen">
+        <div class="end-container p-10 md:p-20">
+            <h1 class="text-4xl md:text-6xl font-bold text-red-500">CONNECTION TERMINATED</h1>
+            <p class="text-xl md:text-2xl mt-6 text-gray-300">You are Out Of Time</p>
+            <p class="text-xl md:text-2xl text-gray-300">The anomaly remains. The splinter in your mind fades into the background noises...</p>
+            <p class="text-xl md:text-2xl text-gray-300">And you remain trapped in the Matrix, just like the others. What a shame.</p>
+            <p class="text-lg mt-8 text-red-400">[Signal Lost... User instance flagged for archival]</p>
+        </div>
+        <div class="flex flex-row justify-center items-center mt-10">
+            <a href="index.html" class="retry-button">[ RE-ESTABLISH CONNECTION? ]</a>
+            <a href="#" id="forfeit-btn" class="retry-button ml-4" style="background-color:#ff0000;color:#fff;border-color:#ff0000;">[ FORFEIT ]</a>
+        </div>
+    <script>
+        window.addEventListener('load', () => {
+            // A synth with a more aggressive sound for failure
+            const fmSynth = new Tone.FMSynth({
+                harmonicity: 3,
+                modulationIndex: 10,
+                envelope: { attack: 0.01, decay: 2 }
+            }).toDestination(); 
+            // Play a low, dissonant, descending tone
+            fmSynth.triggerAttackRelease("C2", "1n");
+            fmSynth.triggerAttackRelease("B1", "1n", Tone.now() + 0.2);
+
+            // Play song as long as the page is open, start from page load
+            const audio = document.getElementById('gameover-audio');
+            let audioStarted = false;
+            function startAudio() {
+                if (audioStarted || !audio) return;
+                audioStarted = true;
+                audio.currentTime = 0;
+                audio.loop = true;
+                audio.play().catch(() => {
+                    // Fallback: play on first user interaction if autoplay is blocked
+                    const resume = () => {
+                        audio.play();
+                        window.removeEventListener('click', resume);
+                        window.removeEventListener('keydown', resume);
+                    };
+                    window.addEventListener('click', resume);
+                    window.addEventListener('keydown', resume);
+                });
+            }
+            startAudio();
+            window.addEventListener('beforeunload', () => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        })
+        document.getElementById('forfeit-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('', '_self', '');
+            window.close();
+        });
+    </script>
+    </div>
+</body>
+</html>

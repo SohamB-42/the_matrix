@@ -1,0 +1,64 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Anomaly [SESSION ENDED]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 -z-10"></canvas>
+    <div class="full-screen-container">
+        <h1 class="text-3xl md:text-5xl mb-4">Ignorance truly is bliss, isn't it?</h1>
+        <p id="countdown-text" class="text-xl">This connection will terminate in 10...</p>
+        <a href="index.html" class="retry-button">[ RECONNECT ]</a>
+    </div>
+    <script src="matrix.js"></script>
+    <script>
+        let countdown = 10;
+        const countdownText = document.getElementById('countdown-text');
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                countdownText.textContent = `This connection will terminate in ${countdown}...`;
+            } else {
+                countdownText.textContent = "Connection Terminated.";
+                clearInterval(interval);
+            }
+        }, 1000);
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matrix Anomaly [SESSION ENDED]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 -z-10"></canvas>
+    <div class="full-screen-container">
+        <h1 class="text-3xl md:text-5xl mb-4">Ignorance truly is bliss, isn't it?</h1>
+        <p id="countdown-text" class="text-xl">Redirecting in 5...</p>
+    </div>
+    <script src="matrix.js"></script>
+    <script>
+        let countdown = 5;
+        const countdownText = document.getElementById('countdown-text');
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                countdownText.textContent = `Redirecting in ${countdown}...`;
+            } else {
+                countdownText.textContent = "Redirecting...";
+                clearInterval(interval);
+                window.location.href = "gameover.html";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

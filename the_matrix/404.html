@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Anomaly [SYSTEM_CORRUPTION]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .puzzle-panel {
+            background: rgba(0, 0, 0, 0.75);
+            border: 2px solid #555;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .panel-header {
+            color: #ff0000;
+            text-shadow: 0 0 8px #ff0000;
+            animation: flicker 2s infinite alternate;
+        }
+        #glitch-container { 
+            font-size: 1.5em; 
+            line-height: 1.2; 
+            text-transform: uppercase; 
+            word-break: break-all; 
+            text-shadow: 0 0 5px #ff0000; 
+            color: #ff0000;
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #444;
+            padding: 0.5rem;
+        }
+        .stable-char { 
+            color: #00ffff; 
+            text-shadow: 0 0 8px #00ffff; 
+            animation: pulse 1.5s infinite; 
+        }
+        #override-input { 
+            background: transparent; 
+            border: none;
+            border-bottom: 2px solid #0f0; 
+            color: #0f0; 
+            font-family: inherit; 
+            font-size: 1.5em; 
+            text-align: left; 
+            padding: 10px 0; 
+            width: 100%; 
+            outline: none; 
+            text-transform: uppercase; 
+            transition: all 0.3s;
+        }
+        #override-input:focus {
+            border-color: #fff;
+            box-shadow: 0 2px 15px -5px #fff;
+        }
+        #feedback-line { 
+            height: 2em; 
+            font-size: 1.2em; 
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 4px #ff0000, 0 0 11px #ff0000, 0 0 19px #ff0000;
+                color: #ff0000;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="error-audio" src="tron.mp3" preload="auto"></audio>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 -z-10"></canvas>
+    <div class="view flex-col justify-center items-center h-screen w-screen p-5">
+        
+        <div class="puzzle-panel w-full max-w-5xl p-6 rounded-lg">
+            <h1 class="panel-header text-3xl font-bold mb-4">[ SYSTEM CORRUPTION DETECTED ]</h1>
+            
+            <div id="glitch-container" class="w-full h-48 overflow-hidden mb-4 rounded"></div>
+            
+            <p class="text-lg mb-4 text-gray-400 italic">// Isolate the constants from the variables... (3 attempts remaining)</p>
+            
+            <div class="w-full max-w-xl text-left mx-auto">
+                <label for="override-input" class="text-2xl block mb-2 text-green-400">> OVERRIDE_CODE:</label>
+                <input type="text" id="override-input" autocomplete="off" autofocus>
+                <p id="feedback-line" class="mt-4 h-8 font-bold"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="matrix.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Play music as long as the page is open
+            const audio = document.getElementById('error-audio');
+            let audioStarted = false;
+            function startAudio() {
+                if (audioStarted || !audio) return;
+                audioStarted = true;
+                audio.currentTime = 0;
+                audio.loop = true;
+                audio.play().catch(() => {
+                    // Fallback: play on first user interaction if autoplay is blocked
+                    const resume = () => {
+                        audio.play();
+                        window.removeEventListener('click', resume);
+                        window.removeEventListener('keydown', resume);
+                    };
+                    window.addEventListener('click', resume);
+                    window.addEventListener('keydown', resume);
+                });
+            }
+            startAudio();
+            window.addEventListener('beforeunload', () => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        });
+            const glitchContainer = document.getElementById('glitch-container');
+            const overrideInput = document.getElementById('override-input');
+            const feedbackLine = document.getElementById('feedback-line');
+            
+            const overrideCode = "STABILIZE";
+            const codeChars = overrideCode.split('');
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+            let wrongAttempts = 0;
+
+            function generateGlitchText() {
+                let content = '';
+                for (let i = 0; i < 300; i++) {
+                    if (Math.random() < 0.05) {
+                        const char = codeChars[Math.floor(Math.random() * codeChars.length)];
+                        content += `<span class="stable-char">${char}</span>`;
+                    } else {
+                        content += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    }
+                }
+                glitchContainer.innerHTML = content;
+            }
+
+            const glitchInterval = setInterval(generateGlitchText, 100);
+
+            overrideInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const userInput = overrideInput.value.trim().toUpperCase();
+                    
+                    if (userInput === overrideCode) {
+                        clearInterval(glitchInterval);
+                        glitchContainer.innerHTML = '';
+                        feedbackLine.style.color = '#00ff00';
+                        feedbackLine.textContent = "[OVERRIDE_ACCEPTED]... You did it. You broke the loop.";
+                        overrideInput.disabled = true;
+
+                        setTimeout(() => {
+                            glitchContainer.style.color = '#00ff00';
+                            glitchContainer.style.textShadow = '0 0 8px #00ff00';
+                            glitchContainer.textContent = "PART 4 REVEALED: AB56";
+                        }, 1500);
+
+                        setTimeout(() => {
+                            feedbackLine.textContent = "The final piece is yours. Now, assemble the key and get out.";
+                        }, 3000);
+
+                        setTimeout(() => {
+                            window.location.href = 'terminal.html';
+                        }, 5000);
+
+                    } else {
+                        wrongAttempts++;
+                        const attemptsLeft = 3 - wrongAttempts;
+                        feedbackLine.style.color = '#ff0000';
+                        
+                        if (attemptsLeft > 0) {
+                            feedbackLine.textContent = `[OVERRIDE_REJECTED] You should look to Stabilize the system, Detective... [${attemptsLeft} ATTEMPT(S) REMAINING]`;
+                            overrideInput.value = '';
+                            overrideInput.style.borderColor = '#ff0000';
+                            overrideInput.style.boxShadow = '0 2px 15px -5px #ff0000';
+                            setTimeout(() => {
+                                overrideInput.style.borderColor = '#0f0';
+                                overrideInput.style.boxShadow = 'none';
+                                feedbackLine.textContent = "";
+                            }, 1500);
+                        } else {
+                            clearInterval(glitchInterval);
+                            feedbackLine.textContent = "[SYSTEM_LOCKOUT]... [CONNECTION_SEVERED]";
+                            overrideInput.disabled = true;
+                            overrideInput.value = 'ACCESS DENIED';
+                            glitchContainer.innerHTML = '';
+                            setTimeout(() => {
+                                window.location.href = 'gameover.html';
+                            }, 3000);
+                        }
+                    }
+                }
+            });
+        
+    </script>
+</body>
+</html>

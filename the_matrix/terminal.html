@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Anomaly [TERMINAL ACCESS]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+</head>
+<body>
+    <audio id="game-audio" src="dream.mp3" preload="auto"></audio>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 -z-10"></canvas>
+
+    <div class="flex justify-center items-center h-screen">
+        <!-- Boot-up Sequence Container -->
+        <div id="boot-sequence-container" class="w-full max-w-4xl p-5">
+            <!-- Boot-up lines will be injected here -->
+        </div>
+
+        <!-- Main Terminal Container (Initially Hidden) -->
+        <div id="terminal-container" class="terminal-container hidden">
+            <div id="terminal-output" class="flex-grow overflow-y-auto pr-2"></div>
+            <p class="hover-clue">Terminal Logs</p>
+            <div id="input-container" class="input-area">
+                <span class="prompt">&gt;</span>
+                <input id="command-box" type="text" autocomplete="off" autofocus>
+            </div>
+        </div>
+    </div>
+
+    <script src="matrix.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Play game audio as long as the page is open
+            const audio = document.getElementById('game-audio');
+            let audioStarted = false;
+            function startAudio() {
+                if (audioStarted || !audio) return;
+                audioStarted = true;
+                audio.currentTime = 0;
+                audio.loop = true;
+                audio.play().catch(() => {
+                    // Fallback: play on first user interaction if autoplay is blocked
+                    const resume = () => {
+                        audio.play();
+                        window.removeEventListener('click', resume);
+                        window.removeEventListener('keydown', resume);
+                    };
+                    window.addEventListener('click', resume);
+                    window.addEventListener('keydown', resume);
+                });
+            }
+            startAudio();
+            window.addEventListener('beforeunload', () => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            const bootContainer = document.getElementById('boot-sequence-container');
+            const terminalContainer = document.getElementById('terminal-container');
+            const terminalOutput = document.getElementById('terminal-output');
+            const commandBox = document.getElementById('command-box');
+            
+            let wrongCount = 0;
+            let isLocked = false;
+
+            const successSynth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 } }).toDestination();
+            const errorSynth = new Tone.NoiseSynth({ noise: { type: 'brown' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0 } }).toDestination();
+            const finalKeySynth = new Tone.FMSynth().toDestination();
+
+            const bootLines = [
+                "INITIALIZING CONNECTION...",
+                "ENCRYPTION LAYER: [OK]",
+                "AUTHENTICATING USER: [DETECTIVE]",
+                "SCANNING SYSTEM KERNEL...",
+                "...",
+                "WARNING: ANOMALY DETECTED [CODE: RECURSIVE_LOOP]",
+                "SYSTEM INTEGRITY: 37%",
+                "GRANTING TACTICAL ACCESS...",
+                "SYSTEM ONLINE."
+            ];
+
+            async function runBootSequence() {
+                for (const line of bootLines) {
+                    const p = document.createElement('p');
+                    p.className = 'boot-line';
+                    p.textContent = line;
+                    bootContainer.appendChild(p);
+                    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 100));
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                bootContainer.classList.add('hidden');
+                terminalContainer.classList.remove('hidden');
+                initializeTerminal();
+            }
+
+            function initializeTerminal() {
+                const commands = {
+                    help: "Available commands:\n  'help'   - Shows this list.\n  'part1'  - Hint for the first key fragment.\n  'part2'  - Hint for the second key fragment.\n  'part3'  - Hint for the third key fragment.\n  'assemble [key]' - Assemble found key fragments.\n  'bonus'  - A special message for you.",
+                    part1: "PART 1 hint: Some truths are only revealed when you get closer. Hover over 'Terminal Logs'.\n\n[TRANSMISSION INTERCEPTED]... Good. The first fragment is yours. The system is already reacting to your presence. Be careful. They're watching.",
+                    part2: "PART 2 hint: The path less traveled might lead to a hidden place. I've heard there's a console Hidden off the grid. (Try searching for it through commands, and keep your eyes open)",
+                    part3: "PART 3 hint: The very fabric of this reality is built on code. Inspect the source of it all.",
+                    bonus: "Mistakes are ok, in fact some may turn out to be beneficial, for the greater good...",
+                };
+                const fullKey = "ZX12-QW34-MN78-AB56";
+                const partialKey = "ZX12-QW34-MN78";
+
+                function appendLine(text, type) {
+                    const p = document.createElement('p');
+                    p.className = 'line';
+                    if (type === 'input') {
+                        p.innerHTML = `<span class="prompt">&gt;</span>${text}`;
+                    } else {
+                        p.textContent = text;
+                    }
+                    terminalOutput.appendChild(p);
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                }
+
+                appendLine("System Initialized. Welcome, Detective.", 'output');
+                appendLine("Type 'help' to see available commands.", 'output');
+                commandBox.focus();
+
+                commandBox.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !isLocked) {
+                        if (Tone.context.state !== 'running') { Tone.context.resume(); }
+
+                        const fullInput = commandBox.value.trim();
+                        const commandParts = fullInput.split(' ');
+                        const command = commandParts[0].toLowerCase();
+                        const argument = commandParts.slice(1).join(' ');
+
+                        if (fullInput === '') return;
+                        
+                        appendLine(fullInput, 'input');
+                        
+                        if (fullInput.toLowerCase() === fullKey.toLowerCase()) {
+                            //finalKeySynth.triggerAttackRelease("C4", "2n");
+                            appendLine("KEY ACCEPTED. ANOMALY FIXED. INITIATING REALITY JUMP...", 'output');
+                            isLocked = true;
+                            document.getElementById('input-container').style.display = 'none';
+                            setTimeout(() => window.location.href = 'end.html', 2000);
+                        } else if (command === 'assemble' && argument.toUpperCase() === partialKey) {
+                            successSynth.triggerAttackRelease("A5", "8n");
+                            appendLine("[PARTIAL KEY ACCEPTED]... Signal strength increasing... I can almost see you. The final fragment is locked behind a core system failure. You'll have to break it to fix it. Don't be afraid to cause a little chaos.", 'output');
+                        } else if (command === 'hidden') {
+                            successSynth.triggerAttackRelease("G5", "8n");
+                            window.location.href = 'hidden.html';
+                        } else if (commands[command]) {
+                            successSynth.triggerAttackRelease("C5", "8n");
+                            appendLine(commands[command], 'output');
+                            wrongCount = 0;
+                        } else {
+                            errorSynth.triggerAttackRelease("2n");
+                            wrongCount++;
+                            appendLine("Error: Command not recognized.", 'output');
+                            if (wrongCount >= 3) {
+                                appendLine("FATAL ERROR! System integrity compromised... Rerouting...", 'output');
+                                setTimeout(() => window.location.href = '404.html', 1500);
+                            }
+                        }
+                        commandBox.value = '';
+                    }
+                });
+            }
+
+            runBootSequence();
+        });
+    </script>
+</body>
+</html>

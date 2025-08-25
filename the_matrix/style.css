@@ -1,0 +1,154 @@
+/* PART 3: MN78 */
+/* Import the VT323 font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+  background-color: #000;
+  color: #0f0;
+  /* Apply VT323 as the primary font */
+  font-family: 'VT323', monospace;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  font-size: 22px; /* Increased base font size for better readability */
+}
+
+.hidden {
+    display: none !important;
+}
+
+.view {
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 10;
+    position: relative;
+}
+
+.boot-line {
+    font-size: 1.2em;
+    text-align: left;
+    white-space: pre;
+    margin-bottom: 0.5rem;
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+}
+
+.intro-text {
+  max-width: 800px;
+  font-size: 1.3em;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* New container for pill buttons and their previews */
+.pill-container {
+    position: relative;
+    margin: 20px;
+}
+
+/* New preview tooltip style */
+.pill-preview {
+    display: none;
+    position: absolute;
+    bottom: 110%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    padding: 15px;
+    background-color: rgba(0,0,0,0.8);
+    border: 2px solid;
+    color: #fff;
+    font-size: 0.8em;
+    text-align: center;
+    white-space: normal;
+    z-index: 20;
+}
+
+.pill-container:hover .pill-preview {
+    display: block; /* Show preview on hover */
+}
+
+.red-pill .pill-preview {
+    border-color: #f00;
+}
+
+.blue-pill .pill-preview {
+    border-color: #00f;
+}
+
+
+/* Redesigned Pill Buttons for VT323 Font */
+.pill-button {
+  font-size: 1.8em;
+  padding: 20px 40px; /* Reduced padding */
+  border: 3px solid;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px;
+  text-decoration: none;
+  min-width: 300px; /* Ensure buttons have a minimum width */
+}
+
+.red-pill .pill-button { background-color: transparent; border-color: #f00; color: #f00; }
+.red-pill .pill-button:hover { background-color: #f00; color: #000; text-shadow: none; }
+.blue-pill .pill-button { background-color: transparent; border-color: #00f; color: #00f; }
+.blue-pill .pill-button:hover { background-color: #00f; color: #000; text-shadow: none; }
+
+.proceed-button, .retry-button {
+  font-size: 1.2em;
+  padding: 15px 30px;
+  margin-top: 30px;
+  cursor: pointer;
+  background-color: #111;
+  border: 1px solid #0f0;
+  color: #0f0;
+  box-shadow: 0 0 10px #0f0;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.proceed-button:hover, .retry-button:hover { background-color: #0f0; color: #000; }
+
+.hidden-console-ascii {
+  font-size: clamp(8px, 1.5vw, 16px);
+  white-space: pre;
+  text-align: center;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff;
+}
+
+.terminal-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(0,0,0,0.7);
+    border: 2px solid #0f0;
+    width: 80%;
+    max-width: 900px;
+    height: 70%;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px #0f0;
+    display: flex;
+    flex-direction: column;
+}
+.line { margin: 5px 0; white-space: pre-wrap; font-size: 1.1em; }
+.input-area { display: flex; margin-top: 10px; align-items: center; }
+
+#terminal-output { flex-grow: 1; overflow-y: auto; padding-right: 10px; }
+#terminal-output::-webkit-scrollbar { width: 8px; }
+#terminal-output::-webkit-scrollbar-track { background: #1a1a1a; }
+#terminal-output::-webkit-scrollbar-thumb { background-color: #0f0; border-radius: 4px; }
+#command-box { background: transparent; border: none; color: #0f0; font-family: inherit; font-size: 1.1em; width: 100%; outline: none; }
+.prompt { margin-right: 8px; font-size: 1.1em; }
+.hover-clue { cursor: pointer; display: inline-block; padding: 5px 0; font-size: 1.1em; }
+.hover-clue:hover::after { content: " [PART 1: ZX12]"; color: #0ff; animation: glitch 0.3s infinite; }
+@keyframes glitch { 0%, 100% { text-shadow: 2px 0 #0ff, -2px 0 red; } 50% { text-shadow: -2px 0 #0ff, 2px 0 red; } }
+
+.full-screen-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 20px; box-sizing: border-box; }
+.revive-button { padding: 15px 30px; font-size: 1.2em; background: #0f0; color: black; font-family: inherit; border: none; cursor: pointer; margin: 20px; box-shadow: 0 0 10px #0f0; transition: all 0.2s ease-in-out; text-decoration: none; }
+.revive-button:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+.flicker-trap { animation: flickerTrap 0.2s infinite alternate; }
+@keyframes flickerTrap { 0% { opacity: 0.2; text-shadow: 0 0 5px red; } 50% { opacity: 1; text-shadow: 0 0 10px red; } 100% { opacity: 0.3; text-shadow: 0 0 5px red; } }

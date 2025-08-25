@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Anomaly [AWAITING CONNECTION...]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tone.js for sound generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        /* Custom styles for the elevated content panel */
+        .content-panel {
+            background: rgba(0, 0, 0, 0.75);
+            border: 2px solid #374151; /* Tailwind gray-700 */
+            border-radius: 0.75rem;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+            backdrop-filter: blur(5px);
+            width: 90%;
+            max-width: 56rem; /* max-w-5xl */
+            padding: 2.5rem; /* p-10 */
+        }
+        /* Styling for the username input is now handled by Tailwind classes directly on the element */
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 -z-10"></canvas>
+
+    <!-- Username Prompt View (Full Screen) -->
+    <div id="username-view" class="view flex-col justify-center items-center">
+        <div class="flex flex-col justify-center items-center h-screen w-full">
+            <h1 class="text-3xl mb-4 text-center">IDENTIFY YOURSELF</h1>
+            <input type="text" id="username-input" placeholder="ENTER YOUR HANDLE..." class="username-input w-full max-w-md px-4 py-2 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-purple-700 mb-4 bg-black text-cyan-300 font-mono tracking-widest shadow-lg focus:bg-gray-900 focus:text-purple-300 transition-all duration-200 text-center" autocomplete="off" autofocus>
+            <button id="connect-button" class="proceed-button">[ CONNECT ]</button>
+        </div>
+    </div>
+
+    <!-- The Voice Intro View (Initially Hidden, now inside a panel) -->
+    <div id="voice-view" class="view hidden flex justify-center items-center p-5">
+        <div class="content-panel">
+            <div id="conversation-container" class="w-full">
+                <!-- Conversation will be injected by intro.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pill Choice View (Initially Hidden) -->
+    <div id="choice-view" class="view hidden flex justify-center items-center min-h-screen p-5">
+        <div class="content-panel flex flex-col md:flex-row justify-center items-center w-full" style="margin-top: auto; margin-bottom: auto;">
+            <div class="pill-container red-pill flex flex-col items-center justify-center m-4">
+                <div class="pill-preview text-center">You take the red pill, you stay here, and I show you how deep the rabbit hole really goes.</div>
+                <a href="terminal.html" class="pill-button mt-4">Take the Red Pill</a>
+            </div>
+            <div class="pill-container blue-pill flex flex-col items-center justify-center m-4">
+                <div class="pill-preview text-center">You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to believe.</div>
+                <a href="bluepill.html" class="pill-button mt-4">Take the Blue Pill</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="matrix.js"></script>
+    <script src="intro.js"></script>
+    
+    <audio id="intro-audio" src="tenet.mp3" preload="auto"></audio>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('intro-audio');
+        const voiceView = document.getElementById('voice-view');
+        const choiceView = document.getElementById('choice-view');
+        let audioStarted = false;
+
+        function startAudio() {
+            if (audioStarted || !audio) return;
+            audioStarted = true;
+            audio.currentTime = 0;
+            audio.loop = true;
+            audio.play().catch(error => console.log("Audio playback requires user interaction."));
+        }
+
+        function stopAudio() {
+            if (!audio) return;
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        const observer = new MutationObserver((mutations) => {
+            for (let mutation of mutations) {
+                if (mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.id === 'voice-view' && !target.classList.contains('hidden')) {
+                        startAudio();
+                    }
+                    if (target.id === 'choice-view' && !target.classList.contains('hidden')) {
+                        stopAudio();
+                    }
+                }
+            }
+        });
+
+        if (voiceView) observer.observe(voiceView, { attributes: true });
+        if (choiceView) observer.observe(choiceView, { attributes: true });
+
+        window.addEventListener('beforeunload', stopAudio);
+    });
+    </script>
+</body>
+</html>
