@@ -10,7 +10,8 @@
 ```
 
 A minimal, browser-based puzzle game about a choice. Are you a bug, or are you a feature?
-
+Now available to play directly, deployed using Netlify!
+https://escapingthematrix.netlify.app/
 
 
 -----
