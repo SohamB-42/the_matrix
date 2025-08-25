@@ -11,13 +11,13 @@
 
 A minimal, browser-based puzzle game about a choice. Are you a bug, or are you a feature?
 
+
+
 -----
 
 ### Synopsis
 
-The world you know is a simulation, and it's breaking. You are the **Detective**, an anomaly with the unique ability to perceive the glitches in the system's code. A mysterious entity contacts you with an offer.
-
-This is your definitive choice:
+The world you know is a simulation, and it's breaking. You are the **Detective**, an anomaly with the unique ability to perceive the glitches in the system's code. A mysterious entity contacts you with a definitive choice:
 
   * Take the **Blue Pill**: Return to blissful ignorance. The connection is severed. **Game Over.**
   * Take the **Red Pill**: Accept the truth and your mission. You are taken to the system's core terminal to begin your work.
@@ -31,11 +31,20 @@ Your goal is to find the **four fragments** of a master key to repair the critic
   * 💊 **Iconic Choice**: The Red Pill / Blue Pill dilemma determines your path from the very beginning.
   * 💻 **Terminal Interface**: A retro-inspired console is your window into the code of the Matrix.
   * 🧩 **Multi-Layered Puzzles**: Investigate hidden commands, inspect source code, and survive system corruption events.
+  * 🎧 **Curated Soundtrack**: An atmospheric score that reacts to your choices and progress.
   * 🎬 **Multiple Endings**: Succeed and be welcomed to the "real world," or fail and have your connection permanently lost.
 
 -----
 
-### 🚀 Getting Started
+### A Note on Immersion
+
+This game is designed to be an atmospheric experience. For the best immersion, **using headphones is highly recommended.** The curated soundtrack features a blend of dark ambient, glitchy electronic, and tense synth-driven themes inspired by classic sci-fi thrillers, all designed to pull you deeper into the simulation.
+
+-----
+
+### 🛠️ Development & Running Locally
+
+For those who wish to run the project locally or contribute:
 
 1.  **Clone the repository:**
     ```sh
@@ -46,11 +55,9 @@ Your goal is to find the **four fragments** of a master key to repair the critic
 
 -----
 
-### 🤫 System Override // Spoilers ahead, Proceed with Caution
+### 🤫 System Override // Major Spoilers Ahead
 
 Click to reveal puzzle solutions and the final key.
-
-### **Start of Spoilers**
 
 #### **Fragment Locations**
 
@@ -68,7 +75,7 @@ Enter the full key into the terminal to win:
 
 -----
 
-### 🛠️ Built With
+#### **Built With**
 
   * HTML5
   * CSS3
