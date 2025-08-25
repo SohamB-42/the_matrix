@@ -48,7 +48,7 @@ For those who wish to run the project locally or contribute:
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/your_username/the_matrix.git
+    git clone https://github.com/SohamB-42/the_matrix.git
     ```
 2.  **Run the game:**
     Navigate to the project directory and open `index.html` in any modern web browser.
